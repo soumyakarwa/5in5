@@ -19,13 +19,13 @@ function draw() {
   textFont(fontlibre); 
   for(word in dataset){
     let curr = dataset[word]; 
-    if(curr < 50) {
+    if(curr < 20) {
       fill(palette[0]); 
-  } else if(curr >= 50 && curr < 100) {
+  } else if(curr >= 20 && curr < 60) {
       fill(palette[1]);
-  } else if(curr >= 100 && curr < 150) {
+  } else if(curr >= 60 && curr < 100) {
       fill(palette[2]);
-  } else if(curr >= 150 && curr < 200) {
+  } else if(curr >= 140 && curr < 140) {
       fill(palette[3]);
   } else {
       fill(palette[4]);
