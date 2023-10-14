@@ -25,12 +25,12 @@ with open('clockwork_angel.pdf', 'rb') as file:
 
     word_count = {}
     for word in words:
-        if (len(word) < 4):
+        if (len(word) < 4) or word.isnumeric():
             continue
         word_count[word] = word_count.get(word, 0) + 1
 
-    sorted_word_count = {k: v for k, v in sorted(
-        word_count.items(), key=lambda item: item[1], reverse=True)}
+    # sorted_word_count = {k: v for k, v in sorted(
+    #     word_count.items(), key=lambda item: item[1], reverse=True)}
 
     with open('text1.json', 'w') as json_file:
-        json.dump(sorted_word_count, json_file)
+        json.dump(word_count, json_file)
