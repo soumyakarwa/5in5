@@ -1,13 +1,13 @@
 import PyPDF2
 import json
 import string
+import stanza
 
 with open('clockwork_angel.pdf', 'rb') as file:
     reader = PyPDF2.PdfReader(file)
     text = {}
 
-    print(len(reader.pages))
-    for page_num in range(len(reader.pages)):
+    for page_num in range(7, len(reader.pages)):
         page = reader.pages[page_num]
         text[page_num] = page.extract_text()
 
@@ -24,13 +24,25 @@ with open('clockwork_angel.pdf', 'rb') as file:
         '\n') for word in line.split()]
 
     word_count = {}
+    part_of_speech = {}
+    nlp = stanza.Pipeline(lang='en')
     for word in words:
         if (len(word) < 4) or word.isnumeric():
             continue
         word_count[word] = word_count.get(word, 0) + 1
+    print("word count processed")
 
-    # sorted_word_count = {k: v for k, v in sorted(
-    #     word_count.items(), key=lambda item: item[1], reverse=True)}
+    for word in word_count.keys():
+        doc = nlp(word)
+        for token in doc.sentences[0].words:
+            print("in nested loop")
+            part_of_speech[token.text] = token.upos
+            print(part_of_speech[token.text])
 
+    print("OUT")
+    combined_dict = {word: {'count': word_count[word], 'pos': part_of_speech.get(
+        word, 'N/A')} for word in word_count}
+
+    # Save the combined dictionary to a JSON file
     with open('text1.json', 'w') as json_file:
-        json.dump(word_count, json_file)
+        json.dump(combined_dict, json_file)
